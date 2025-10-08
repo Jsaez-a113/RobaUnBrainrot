@@ -1,0 +1,15 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div class="row align-items-center g-4">
+  <div class="col-md-6">
+    <h2 class="fw-bold">Nuestra Misión</h2>
+    <p>{{ mision }}</p>
+    <h2 class="fw-bold mt-4">Nuestra Visión</h2>
+    <p>{{ vision }}</p>
+  </div>
+  <div class="col-md-6">
+    <img class="img-fluid rounded shadow" src="{{ banner_url }}" alt="Quiénes Somos">
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'brainrot/css/brainrot.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+  <div class="col-md-6">
+    {% if item.img %}
+      <img class="img-fluid rounded shadow" src="{{ item.img.url }}" alt="{{ item.name }}">
+    {% else %}
+      <div class="bg-light d-flex align-items-center justify-content-center rounded shadow" style="height: 400px;">
+        <i class="fa-solid fa-image text-muted" style="font-size: 5rem;"></i>
+      </div>
+    {% endif %}
+  </div>
+  <div class="col-md-6">
+    <h2 class="fw-bold">{{ item.name }}</h2>
+    <p class="lead">{{ item.description }}</p>
+    <p class="text-muted mb-1">Creado: {{ item.created|date:"d/m/Y H:i" }}</p>
+    <p class="text-muted">Actualizado: {{ item.updated|date:"d/m/Y H:i" }}</p>
+    <a href="/items/" class="btn btn-outline-secondary mt-3"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'brainrot/js/brainrot.js' %}"></script>
+{% endblock %}

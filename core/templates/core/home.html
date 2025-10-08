@@ -1,0 +1,38 @@
+{% extends "core/base.html" %}
+
+{% block banner %}
+<section class="hero text-left py-5" style="min-height:40vh;">
+  <div class="container py-5">
+    <h1 class="display-5 fw-bold">Roba un Brainrot</h1>
+    <p class="lead">El caos más divertido de Roblox. Explora items brainrot.</p>
+    <a class="btn btn-primary btn-lg" href="/items/">Ver Items</a>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+  {% for juego in juegos %}
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm">
+      <img src="{{ juego.url }}" class="card-img-top" alt="{{ juego.titulo }}">
+      <div class="card-body">
+        <h5 class="card-title">{{ juego.titulo }}</h5>
+        <p class="card-text">{{ juego.descripcion }}</p>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<hr class="my-5">
+<h3 class="mb-3">Comentarios</h3>
+<ul class="list-group">
+  {% for c in comentarios %}
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    <span><strong>{{ c.nombre }}</strong>: {{ c.texto }}</span>
+    <i class="fa-regular fa-comment"></i>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
