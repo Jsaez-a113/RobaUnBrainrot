@@ -7,6 +7,44 @@
 
 {% block content %}
 <h2 class="mb-4">Items Brainrot</h2>
+
+<!-- Filtros -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <label for="category" class="form-label">Filtrar por categoría:</label>
+                <select name="category" id="category" class="form-select">
+                    <option value="">Todas las categorías</option>
+                    {% for cat in categories %}
+                        <option value="{{ cat.slug }}" {% if current_category == cat.slug %}selected{% endif %}>
+                            {{ cat.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="date_filter" class="form-label">Ordenar por fecha:</label>
+                <select name="date_filter" id="date_filter" class="form-select">
+                    <option value="">Por defecto</option>
+                    <option value="recent" {% if current_date_filter == 'recent' %}selected{% endif %}>Más recientes</option>
+                    <option value="old" {% if current_date_filter == 'old' %}selected{% endif %}>Más antiguos</option>
+                    <option value="featured" {% if current_date_filter == 'featured' %}selected{% endif %}>Solo destacados</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="search" class="form-label">Buscar:</label>
+                <input type="text" name="search" id="search" class="form-control" placeholder="Buscar items..." value="{{ search_query }}">
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+                <a href="{% url 'brainrot:item_list' %}" class="btn btn-secondary">Limpiar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Lista de items -->
 <div class="row g-4">
   {% for item in page_obj.object_list %}
   <div class="col-md-4">
@@ -19,21 +57,39 @@
         </div>
       {% endif %}
       <div class="card-body d-flex flex-column">
-        <h5 class="card-title">{{ item.name }}</h5>
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <h5 class="card-title mb-0">{{ item.name }}</h5>
+          {% if item.is_featured %}
+            <span class="badge bg-warning text-dark">⭐ Destacado</span>
+          {% endif %}
+        </div>
+        {% if item.category %}
+          <span class="badge bg-secondary mb-2">{{ item.category.name }}</span>
+        {% endif %}
         <p class="card-text flex-grow-1">{{ item.description|truncatewords:25 }}</p>
-        <a href="/items/{{ item.pk }}/" class="btn btn-outline-primary mt-auto">Ver más</a>
+        <div class="d-flex justify-content-between align-items-center mt-auto">
+          <small class="text-muted">
+            <i class="fa-solid fa-eye"></i> {{ item.views_count }} vistas
+          </small>
+          <a href="/items/{{ item.pk }}/" class="btn btn-outline-primary btn-sm">Ver más</a>
+        </div>
       </div>
     </div>
   </div>
   {% empty %}
-  <p>No hay items aún. Crea algunos en el admin.</p>
+  <div class="col-12">
+    <div class="alert alert-info">
+      <p class="mb-0">No hay items que coincidan con los filtros seleccionados.</p>
+    </div>
+  </div>
   {% endfor %}
 </div>
 
+<!-- Paginación -->
 <nav aria-label="Paginación" class="mt-4">
   <ul class="pagination justify-content-center">
     {% if page_obj.has_previous %}
-      <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_date_filter %}&date_filter={{ current_date_filter }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}">Anterior</a></li>
     {% else %}
       <li class="page-item disabled"><span class="page-link">Anterior</span></li>
     {% endif %}
@@ -42,12 +98,12 @@
       {% if num == page_obj.number %}
         <li class="page-item active"><span class="page-link">{{ num }}</span></li>
       {% else %}
-        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ num }}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_date_filter %}&date_filter={{ current_date_filter }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}">{{ num }}</a></li>
       {% endif %}
     {% endfor %}
 
     {% if page_obj.has_next %}
-      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_date_filter %}&date_filter={{ current_date_filter }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}">Siguiente</a></li>
     {% else %}
       <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
     {% endif %}

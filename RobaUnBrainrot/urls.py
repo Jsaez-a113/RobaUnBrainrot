@@ -11,6 +11,9 @@ urlpatterns = [
     path('preguntas-frecuentes/', views.faq, name='faq'),
     path('galeria/', views.gallery, name='gallery'),
     path('', include('brainrot.urls')),
+    path('', include('contact.urls')),
+    # Catch-all para 404 personalizado (debe ir al final)
+    path('<path:path>', views.custom_404, name='404'),
 ]
 
 # Serve media files during development

@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.http import Http404
+
 
 def home(request):
     juegos = [
@@ -55,3 +57,12 @@ def gallery(request):
         "page_title": "Roba un Brainrot - Galería",
     }
     return render(request, "core/gallery.html", contexto)
+
+
+def custom_404(request, exception=None, path=None):
+    """Vista personalizada para el error 404"""
+    context = {
+        'page_title': '404 - Página no encontrada',
+        'banner_url': 'https://images.alphacoders.com/139/1396558.jpg',
+    }
+    return render(request, 'core/404.html', context, status=404)

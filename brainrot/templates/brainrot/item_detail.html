@@ -17,13 +17,51 @@
     {% endif %}
   </div>
   <div class="col-md-6">
-    <h2 class="fw-bold">{{ item.name }}</h2>
+    <div class="d-flex justify-content-between align-items-start mb-3">
+      <h2 class="fw-bold mb-0">{{ item.name }}</h2>
+      {% if item.is_featured %}
+        <span class="badge bg-warning text-dark">⭐ Destacado</span>
+      {% endif %}
+    </div>
+    {% if item.category %}
+      <span class="badge bg-secondary mb-3">{{ item.category.name }}</span>
+    {% endif %}
     <p class="lead">{{ item.description }}</p>
-    <p class="text-muted mb-1">Creado: {{ item.created|date:"d/m/Y H:i" }}</p>
-    <p class="text-muted">Actualizado: {{ item.updated|date:"d/m/Y H:i" }}</p>
-    <a href="/items/" class="btn btn-outline-secondary mt-3"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+    <div class="mb-3">
+      <p class="text-muted mb-1">
+        <i class="fa-solid fa-eye"></i> <strong>{{ item.views_count }}</strong> vistas
+      </p>
+      <p class="text-muted mb-1">Creado: {{ item.created|date:"d/m/Y H:i" }}</p>
+      <p class="text-muted">Actualizado: {{ item.updated|date:"d/m/Y H:i" }}</p>
+    </div>
+    <a href="/items/" class="btn btn-outline-secondary mt-3">
+      <i class="fa-solid fa-arrow-left"></i> Volver
+    </a>
   </div>
 </div>
+
+<!-- Comentarios -->
+{% if comments %}
+<hr class="my-5">
+<div class="row">
+  <div class="col-12">
+    <h3 class="mb-4">Comentarios ({{ comments.count }})</h3>
+    <div class="list-group">
+      {% for comment in comments %}
+      <div class="list-group-item">
+        <div class="d-flex w-100 justify-content-between mb-2">
+          <h6 class="mb-0">
+            <i class="fa-solid fa-user"></i> {{ comment.user.username }}
+          </h6>
+          <small class="text-muted">{{ comment.created|date:"d/m/Y H:i" }}</small>
+        </div>
+        <p class="mb-0">{{ comment.content }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endif %}
 {% endblock %}
 
 {% block extra_js %}

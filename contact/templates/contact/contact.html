@@ -1,0 +1,67 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/core.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">
+          <i class="fa-solid fa-envelope"></i> Formulario de Contacto
+        </h3>
+      </div>
+      <div class="card-body p-4">
+        <p class="lead mb-4">
+          ¿Tienes alguna pregunta, sugerencia o comentario? 
+          ¡Nos encantaría escucharte! Completa el formulario y nos pondremos en contacto contigo.
+        </p>
+        
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+        
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {% crispy form %}
+        </form>
+      </div>
+    </div>
+    
+    <div class="card shadow-sm mt-4">
+      <div class="card-body">
+        <h5 class="card-title">
+          <i class="fa-solid fa-info-circle"></i> Información de Contacto
+        </h5>
+        <hr>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <p class="mb-1"><strong>Email:</strong></p>
+            <p class="text-muted">contacto@robaunbrainrot.com</p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <p class="mb-1"><strong>Redes Sociales:</strong></p>
+            <div class="social">
+              <a href="https://www.instagram.com/" target="_blank" class="text-decoration-none me-2">
+                <i class="fab fa-instagram"></i> Instagram
+              </a>
+              <a href="https://www.youtube.com/" target="_blank" class="text-decoration-none me-2">
+                <i class="fab fa-youtube"></i> YouTube
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
