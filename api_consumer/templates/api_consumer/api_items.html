@@ -1,0 +1,96 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'brainrot/css/brainrot.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="mb-0">Items Brainrot desde API</h2>
+  <a href="/items/" class="btn btn-outline-secondary">
+    <i class="fa-solid fa-list"></i> Ver Items Directos
+  </a>
+</div>
+
+{% if error %}
+<div class="alert alert-warning">
+  <h5 class="alert-heading">
+    <i class="fa-solid fa-exclamation-triangle"></i> Advertencia
+  </h5>
+  <p class="mb-0">{{ error }}</p>
+  <hr>
+  <p class="mb-0 small">
+    <strong>URL de la API:</strong> <code>{{ api_url }}</code>
+  </p>
+</div>
+{% endif %}
+
+{% if items %}
+<div class="alert alert-info mb-4">
+  <i class="fa-solid fa-info-circle"></i> 
+  Se encontraron <strong>{{ count }}</strong> items desde la API REST.
+</div>
+
+<div class="row g-4">
+  {% for item in items %}
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm item-card">
+      {% if item.img_url %}
+        <img src="{{ item.img_url }}" class="card-img-top" alt="{{ item.name }}" style="height: 180px; object-fit: cover;" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'180\'%3E%3Crect fill=\'%23ddd\' width=\'300\' height=\'180\'/%3E%3Ctext fill=\'%23999\' font-family=\'sans-serif\' font-size=\'16\' x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\'%3EImagen no disponible%3C/text%3E%3C/svg%3E';">
+      {% else %}
+        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
+          <i class="fa-solid fa-image text-muted" style="font-size: 3rem;"></i>
+        </div>
+      {% endif %}
+      <div class="card-body d-flex flex-column">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <h5 class="card-title mb-0">{{ item.name }}</h5>
+          {% if item.is_featured %}
+            <span class="badge bg-warning text-dark">⭐ Destacado</span>
+          {% endif %}
+        </div>
+        {% if item.category_name %}
+          <span class="badge bg-secondary mb-2">{{ item.category_name }}</span>
+        {% endif %}
+        <p class="card-text flex-grow-1">{{ item.description|truncatewords:25 }}</p>
+        <div class="d-flex justify-content-between align-items-center mt-auto">
+          <small class="text-muted">
+            <i class="fa-solid fa-eye"></i> {{ item.views_count }} vistas
+          </small>
+          <small class="text-muted">
+            <i class="fa-solid fa-calendar"></i> {{ item.created|date:"d/m/Y" }}
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+  <p class="mb-0">No hay items disponibles desde la API en este momento.</p>
+</div>
+{% endif %}
+
+<div class="card mt-4">
+  <div class="card-header bg-primary text-white">
+    <h5 class="mb-0">
+      <i class="fa-solid fa-code"></i> Información de la API
+    </h5>
+  </div>
+  <div class="card-body">
+    <p><strong>Endpoint:</strong> <code>{{ api_url }}</code></p>
+    <p><strong>Métodos disponibles:</strong></p>
+    <ul>
+      <li><strong>GET</strong>: Obtener lista de items</li>
+      <li><strong>POST</strong>: Crear un nuevo item</li>
+    </ul>
+    <p class="mb-0"><strong>Nota:</strong> Esta página consume datos desde la API REST local.</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'brainrot/js/brainrot.js' %}"></script>
+{% endblock %}

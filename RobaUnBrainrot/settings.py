@@ -38,12 +38,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Third party apps
+    'rest_framework',
     'crispy_forms',
     'crispy_bootstrap5',
     # Local apps
     'core',
     'brainrot',
     'contact',
+    'accounts',
+    'api',
+    'api_consumer',
 ]
 
 MIDDLEWARE = [
@@ -141,3 +145,30 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 # Handler para error 404 personalizado
 handler404 = 'core.views.custom_404'
+
+# Email Configuration (Mailtrap)
+# Configura estas variables con tus credenciales de Mailtrap
+# Obtén las credenciales en: https://mailtrap.io/
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_PORT = 2525
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'tu_usuario_mailtrap'  # Reemplaza con tu usuario de Mailtrap
+EMAIL_HOST_PASSWORD = 'tu_password_mailtrap'  # Reemplaza con tu password de Mailtrap
+DEFAULT_FROM_EMAIL = 'noreply@robaunbrainrot.com'
+CONTACT_EMAIL = 'contacto@robaunbrainrot.com'  # Email donde se recibirán los mensajes
+
+# Django REST Framework Configuration
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',  # Sin autenticación requerida
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.MultiPartParser',
+        'rest_framework.parsers.FormParser',
+    ],
+}

@@ -12,10 +12,15 @@ urlpatterns = [
     path('galeria/', views.gallery, name='gallery'),
     path('', include('brainrot.urls')),
     path('', include('contact.urls')),
-    # Catch-all para 404 personalizado (debe ir al final)
-    path('<path:path>', views.custom_404, name='404'),
+    path('', include('accounts.urls')),
+    path('api/', include('api.urls')),
+    path('', include('api_consumer.urls')),
 ]
 
 # Serve media files during development
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    # Catch-all para 404 personalizado (solo en desarrollo, al final)
+    urlpatterns += [
+        path('<path:path>', views.custom_404, name='404'),
+    ]
