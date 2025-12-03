@@ -150,11 +150,12 @@ handler404 = 'core.views.custom_404'
 # Configura estas variables con tus credenciales de Mailtrap
 # Obtén las credenciales en: https://mailtrap.io/
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# Looking to send emails in production? Check out our Email API/SMTP product!
 EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
-EMAIL_PORT = 2525
+EMAIL_HOST_USER = '45466b0b753b5f'
+EMAIL_HOST_PASSWORD = '3a98a7c2a82adb'
+EMAIL_PORT = '2525'
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'tu_usuario_mailtrap'  # Reemplaza con tu usuario de Mailtrap
-EMAIL_HOST_PASSWORD = 'tu_password_mailtrap'  # Reemplaza con tu password de Mailtrap
 DEFAULT_FROM_EMAIL = 'noreply@robaunbrainrot.com'
 CONTACT_EMAIL = 'contacto@robaunbrainrot.com'  # Email donde se recibirán los mensajes
 
